@@ -15,7 +15,6 @@ let running = true;
 const stopRunning = () => {
   console.log('Exiting polling loop');
   running = false;
-  process.exit(0);
 }
 
 process.on('SIGINT', stopRunning);
@@ -27,7 +26,12 @@ const processor = async () => {
         const out = await client.send(new ReceiveMessageCommand({
           QueueUrl: env.queueUrl,
           WaitTimeSeconds: 15
-      }));      
+      }));    
+      
+      if (!running) {
+        console.log('Processor shutting down...');
+        break;
+      }
 
       if (out.Messages === undefined || out.Messages.length === 0) {
           // note: continue instead of return! 
