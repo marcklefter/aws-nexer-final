@@ -10,8 +10,8 @@ type: Scheduled Job
 on:
   # The scheduled trigger for your job. You can specify a Unix cron schedule or keyword (@weekly) or a rate (@every 1h30m)
   # AWS Schedule Expressions are also accepted: https://docs.aws.amazon.com/AmazonCloudWatch/latest/events/ScheduledEvents.html
-  schedule: "@every 2m"
-retries: 3        # Optional. The number of times to retry the job before failing.
+  schedule: "none"
+#retries: 3        # Optional. The number of times to retry the job before failing.
 #timeout: 1h30m    # Optional. The timeout after which to stop the job if it's still running. You can use the units (h, m, s).
 
 # Configuration for your container and task.
@@ -25,11 +25,13 @@ platform: linux/x86_64   # See https://aws.github.io/copilot-cli/docs/manifest/s
 
 # Optional fields for more advanced use-cases.
 #
-#variables:                    # Pass environment variables as key value pairs.
+variables:                    # Pass environment variables as key value pairs.
 #  LOG_LEVEL: info
+  DB_NAME: tmsdb
 
-#secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
+secrets:                      # Pass secrets from AWS Systems Manager (SSM) Parameter Store.
 #  GITHUB_TOKEN: GITHUB_TOKEN  # The key is the name of the environment variable, the value is the name of the SSM parameter.
+  DB_URL: /copilot/${COPILOT_APPLICATION_NAME}/${COPILOT_ENVIRONMENT_NAME}/secrets/dbUrl
 
 # You can override any of the values defined above by environment.
 #environments:

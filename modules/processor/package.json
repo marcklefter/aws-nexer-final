@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.258.0",
-    "env-var": "^7.3.0"
+    "env-var": "^7.3.0",
+    "mongodb": "^5.1.0"
   }
 }

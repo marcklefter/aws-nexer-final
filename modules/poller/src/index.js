@@ -1,9 +1,10 @@
-const job = () => {
-  console.log('Running job @ ' + new Date());
+const env = require('./env');
+const dba = require('./db');
 
-  if (Math.random() < 0.5) {
-    throw Error('Job failed');
-  }
+const job = async () => {
+    const db = await dba.open(env.dbUrl, env.dbName);
+    await dba.setStatusCompleted(db);
+    await dba.close(); 
 }
 
 job();

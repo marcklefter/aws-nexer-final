@@ -7,7 +7,9 @@ const {
     PublishCommand
 } = require('@aws-sdk/client-sns');
 
+const dba = require('./db');
 const env = require('./env');
+
 
 // ...
 
@@ -19,24 +21,47 @@ const sns = new SNSClient({
 
 // ...
 // TMS API.
-routes.get('/status/:requestId', (req, res) => {
-    res.send('OK: ' + req.params.requestId);
+routes.get('/status/:requestId', async (req, res) => {
+    const db        = await dba.open(env.dbUrl, env.dbName);
+    const request   = await dba.getContentRequest(db, req.params.id);
+    
+    res.send({
+        status: request.status
+    });
 });
 
-routes.get('/content/:requestId', (req, res) => {
-    res.send('OK: ' + req.params.requestId);
+routes.get('/content/:requestId', async(req, res) => {
+    const db        = await dba.open(env.dbUrl, env.dbName);
+    const request   = await dba.getContentRequest(db, req.params.id);
+    
+    res.send(request);
 });
 
 routes.post('/content', async (req, res) => {
     await superagent.post(`http://validator.${process.env.COPILOT_SERVICE_DISCOVERY_ENDPOINT}`).send({});
 
+    // ...
+    // Generate a content request ID.
     const requestId = crypto.randomUUID();
+
+    // ...
+    // Create a new content request.
+    const db = await dba.open(env.dbUrl, env.dbName);
+    await dba.newContentRequest(db, requestId);
+
+    // ...
+    // Publish to SNS topic.
     await sns.send(new PublishCommand({
         Message: requestId,
         TopicArn: env.requestsTopic
     }));
 
-    res.send('Content request ID: ' + requestId);   
+    // ...
+
+    res.send({
+        requestId,
+        status: 'created'
+    });   
 });
 
 // ...
