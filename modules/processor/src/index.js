@@ -19,7 +19,9 @@ let running = true;
 const stopRunning = async () => {
   console.log('Exiting polling loop');
 
-  await dba.close();
+  if (env.usedb) {
+    await dba.close();
+  }
 
   running = false;
 }
@@ -47,7 +49,9 @@ const processor = async () => {
         continue;
     }
 
-    const db = await dba.open();
+    if (env.usedb) {
+      const db = await dba.open();
+    }
       
     for (const message of out.Messages) {
       const {
@@ -61,7 +65,10 @@ const processor = async () => {
       // ...
       // Process message by updating the request status.
       console.log('Processing request with ID: ' + requestId);
-      await dba.setStatusPending(db, requestId);
+
+      if (env.usedb) {
+        await dba.setStatusPending(db, requestId);
+      }
       
 
       // TODO 2. Send DeleteMessageCommand to instruct the queue the this message has been handled and can be removed.

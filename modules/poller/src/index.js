@@ -1,12 +1,18 @@
 const env = require('./env');
 const dba = require('./db');
 
-dba.init(env.dbUrl, env.dbName);
+if (env.usedb) {
+    dba.init(env.dbUrl, env.dbName);
+}
 
 const job = async () => {
-    const db = await dba.open();
-    await dba.setStatusCompleted(db);
-    await dba.close(); 
+    console.log('Running poller @ ' + new Date());
+
+    if (env.usedb) {
+        const db = await dba.open();
+        await dba.setStatusCompleted(db);
+        await dba.close(); 
+    }
 }
 
 job();

@@ -2,6 +2,8 @@ const env = require('env-var');
 
 // ...
 
+const usedb = env.get("USE_DB").default(0).asBool();
+
 const port = env.get('PORT').default('80').asPortNumber();
 
 const dbUrl
@@ -17,6 +19,8 @@ const {
 // ...
 
 module.exports = {
+    usedb,
+    
     port,
 
     dbName,

@@ -19,24 +19,34 @@ const sns = new SNSClient({
     region: 'eu-north-1'
 });
 
-dba.init(env.dbUrl, env.dbName);
+if (env.usedb) {
+    dba.init(env.dbUrl, env.dbName);
+}
 
 // ...
 // TMS API.
 routes.get('/status/:requestId', async (req, res) => {
-    const db        = await dba.open();
-    const request   = await dba.getContentRequest(db, req.params.id);
-    
-    res.send({
-        status: request.status
-    });
+    if (env.usedb) {
+        const db        = await dba.open();
+        const request   = await dba.getContentRequest(db, req.params.id);
+        
+        res.send({
+            status: request.status
+        });
+    }
+
+    res.send('OK: ' + req.params.requestId);
 });
 
 routes.get('/content/:requestId', async(req, res) => {
-    const db        = await dba.open();
-    const request   = await dba.getContentRequest(db, req.params.id);
-    
-    res.send(request);
+    if (env.usedb) {
+        const db        = await dba.open();
+        const request   = await dba.getContentRequest(db, req.params.id);
+        
+        res.send(request);
+    }
+
+    res.send('OK: ' + req.params.requestId);
 });
 
 routes.post('/content', async (req, res) => {
@@ -48,8 +58,10 @@ routes.post('/content', async (req, res) => {
 
     // ...
     // Create a new content request.
-    const db = await dba.open();
-    await dba.newContentRequest(db, requestId);
+    if (env.usedb) {
+        const db = await dba.open();
+        await dba.newContentRequest(db, requestId);
+    }
 
     // ...
     // Publish to SNS topic.
@@ -61,8 +73,7 @@ routes.post('/content', async (req, res) => {
     // ...
 
     res.send({
-        requestId,
-        status: 'created'
+        requestId
     });   
 });
 
