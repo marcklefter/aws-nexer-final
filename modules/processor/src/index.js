@@ -70,7 +70,6 @@ const processor = async () => {
         await dba.setStatusPending(db, requestId);
       }
       
-
       // TODO 2. Send DeleteMessageCommand to instruct the queue the this message has been handled and can be removed.
       await client.send(new DeleteMessageCommand({
         QueueUrl: env.queueUrl,

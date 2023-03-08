@@ -49,7 +49,7 @@ routes.get('/content/:requestId', async(req, res) => {
     res.send('OK: ' + req.params.requestId);
 });
 
-routes.post('/content', async (req, res) => {
+routes.post('/content', async (_req, res) => {
     await superagent.post(`http://validator.${process.env.COPILOT_SERVICE_DISCOVERY_ENDPOINT}`).send({});
 
     // ...

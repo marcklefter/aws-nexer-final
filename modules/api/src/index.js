@@ -28,7 +28,9 @@ process.on('SIGTERM', () => {
         console.log('API server closed');
 
         // other connnections and resources to clean up...
-        await dba.close();
+        if (env.usedb) {
+            await dba.close();
+        }
 
         process.exit(0);
     });
