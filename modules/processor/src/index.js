@@ -15,13 +15,19 @@ const client = new SQSClient({ region: "eu-north-1" });
 // ...
 
 let running = true;
-const stopRunning = () => {
+
+const stopRunning = async () => {
   console.log('Exiting polling loop');
+
+  await dba.close();
+
   running = false;
 }
 
 process.on('SIGINT', stopRunning);
 process.on('SIGTERM', stopRunning);
+
+// ...
 
 const processor = async () => {
   while (running) {
@@ -41,7 +47,7 @@ const processor = async () => {
         continue;
     }
 
-    const db = await dba.open(env.dbUrl, env.dbName);
+    const db = await dba.open();
       
     for (const message of out.Messages) {
       const {

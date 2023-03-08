@@ -19,10 +19,12 @@ const sns = new SNSClient({
     region: 'eu-north-1'
 });
 
+dba.init(env.dbUrl, env.dbName);
+
 // ...
 // TMS API.
 routes.get('/status/:requestId', async (req, res) => {
-    const db        = await dba.open(env.dbUrl, env.dbName);
+    const db        = await dba.open();
     const request   = await dba.getContentRequest(db, req.params.id);
     
     res.send({
@@ -31,7 +33,7 @@ routes.get('/status/:requestId', async (req, res) => {
 });
 
 routes.get('/content/:requestId', async(req, res) => {
-    const db        = await dba.open(env.dbUrl, env.dbName);
+    const db        = await dba.open();
     const request   = await dba.getContentRequest(db, req.params.id);
     
     res.send(request);
@@ -46,7 +48,7 @@ routes.post('/content', async (req, res) => {
 
     // ...
     // Create a new content request.
-    const db = await dba.open(env.dbUrl, env.dbName);
+    const db = await dba.open();
     await dba.newContentRequest(db, requestId);
 
     // ...
