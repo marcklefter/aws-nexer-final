@@ -21,14 +21,14 @@ app.get('/', (_, res) => {
 
 // ...
 
-const srvd = app.listen(env.port, () => {
+const server = app.listen(env.port, () => {
     console.log(`Listening on port ${env.port}`)
 });
 
 process.on('SIGTERM', () => {
     console.log('SIGTERM signal received, closing API server'); 
    
-    srvd.close(() => {
+    server.close(() => {
         console.log('API server closed');
 
         // other connnections and resources to clean up...
