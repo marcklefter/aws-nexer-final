@@ -18,7 +18,7 @@ source:
     branch: master
     repository: https://github.com/marcklefter/aws-nexer-final
     # Optional: specify the name of an existing CodeStar Connections connection.
-    # connection_name: a-connection
+    connection_name: copilot-marck-aws-nexer-final
 
 # This section defines the order of the environments your pipeline will deploy to.
 stages:
