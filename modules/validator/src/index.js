@@ -10,7 +10,7 @@ app.use(express.json());
 
 app.post('/', (_, res) => {
     console.log('tms-validator: Validating TMS request');
-    res.send('TMS request is valid');
+    res.send('TMS request is valid!');
 });
 
 // ...
