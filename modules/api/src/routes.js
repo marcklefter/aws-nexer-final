@@ -72,6 +72,8 @@ routes.post('/content', async (_req, res) => {
 
     // ...
 
+    console.log('Content Request ID ' + requestId + ' published');
+
     res.send({
         requestId
     });   
