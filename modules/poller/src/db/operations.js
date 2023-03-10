@@ -1,4 +1,4 @@
-export const setStatusCompleted = db => {
+const setStatusCompleted = db => {
   return db.collection('content_requests').updateMany(
     {
       status: 'pending'
@@ -10,3 +10,7 @@ export const setStatusCompleted = db => {
     }
   );
 }
+
+module.exports = {
+  setStatusCompleted
+};

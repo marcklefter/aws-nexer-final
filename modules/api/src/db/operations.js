@@ -1,11 +1,11 @@
-export const newContentRequest = (db, requestId) => {
+const newContentRequest = (db, requestId) => {
   return db.collection('content_requests').insertOne({
     requestId,
     status: 'created'
   });
 }
 
-export const getContentRequest = (db, requestId) => {
+const getContentRequest = (db, requestId) => {
   return db.collection('content_requests').findOne(
     {
         requestId
@@ -17,3 +17,8 @@ export const getContentRequest = (db, requestId) => {
     }
   );
 }
+
+module.exports = {
+  newContentRequest,
+  getContentRequest
+};
