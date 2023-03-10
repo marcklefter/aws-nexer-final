@@ -9,7 +9,7 @@ const setStatusPending = (db, requestId) => {
       }
     }
   );
-}
+};
 
 module.exports = {
   setStatusPending

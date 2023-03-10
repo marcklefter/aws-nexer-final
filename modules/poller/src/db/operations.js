@@ -9,7 +9,7 @@ const setStatusCompleted = db => {
       }
     }
   );
-}
+};
 
 module.exports = {
   setStatusCompleted

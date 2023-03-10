@@ -3,7 +3,7 @@ const newContentRequest = (db, requestId) => {
     requestId,
     status: 'created'
   });
-}
+};
 
 const getContentRequest = (db, requestId) => {
   return db.collection('content_requests').findOne(
@@ -16,7 +16,7 @@ const getContentRequest = (db, requestId) => {
         }
     }
   );
-}
+};
 
 module.exports = {
   newContentRequest,
